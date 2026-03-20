@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Sugar Checker</title>
+
+<style>
+    body {
+        font-family: Arial;
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .result-box {
+        margin: 20px auto;
+        padding: 15px;
+        width: 300px;
+        border-radius: 10px;
+        display: none;
+        color: white;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>Patient Sugar Level Checker</h2>
+
+<input type="text" id="patientName" placeholder="Enter Patient Name"><br><br>
+<input type="text" id="doctorName" placeholder="Enter Doctor Name"><br><br>
+<input type="number" id="sugarLevel" placeholder="Enter Sugar Level"><br><br>
+
+<button onclick="checkSugar()" 
+        style="background-color:red; color:white; padding:10px 20px; border:none;">
+    Check Result
+</button>
+
+<!-- Result Box -->
+<div class="result-box" id="resultBox">
+    <p id="output"></p>
+</div>
+
+<script>
+function checkSugar() {
+    var patient = document.getElementById("patientName").value;
+    var doctor = document.getElementById("doctorName").value;
+    var sugar = document.getElementById("sugarLevel").value;
+
+    var result;
+    var box = document.getElementById("resultBox");
+
+    if (sugar > 5) {
+        result = "Diabetic";
+        box.style.backgroundColor = "red";
+    } else {
+        result = "Non-Diabetic";
+        box.style.backgroundColor = "green";
+    }
+
+    document.getElementById("output").innerHTML =
+        "Patient Name: " + patient + "<br>" +
+        "Doctor Name: " + doctor + "<br>" +
+        "Status: " + result;
+
+    box.style.display = "block";
+}
+</script>
+
+</body>
+</html>
