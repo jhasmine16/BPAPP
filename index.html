@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Sugar Checker</title>
+
+<!-- Manifest Connection -->
+<script>
+const manifest = {
+    name: "Patient Sugar Checker",
+    short_name: "SugarCheck",
+    start_url: ".",
+    display: "standalone",
+    background_color: "#ffffff",
+    theme_color: "#ff0000"
+};
+
+const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+const manifestURL = URL.createObjectURL(manifest);
+
+const manifestLink = document.createElement("link");
+manifestLink.rel = "manifest";
+manifestLink.href = manifestURL;
+document.head.appendChild(manifestLink);
+</script>
+
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.result-box {
+    margin: 20px auto;
+    padding: 15px;
+    width: 300px;
+    border-radius: 10px;
+    display: none;
+    color: white;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Patient Sugar Level Checker</h2>
+
+<input type="text" id="patientName" placeholder="Enter Patient Name"><br><br>
+<input type="text" id="doctorName" placeholder="Enter Doctor Name"><br><br>
+<input type="number" id="sugarLevel" placeholder="Enter Sugar Level"><br><br>
+
+<button onclick="checkSugar()" 
+style="background-color:red; color:white; padding:10px 20px; border:none;">
+Check Result
+</button>
+
+<div class="result-box" id="resultBox">
+<p id="output"></p>
+</div>
+
+<script>
+function checkSugar() {
+    var patient = document.getElementById("patientName").value;
+    var doctor = document.getElementById("doctorName").value;
+    var sugar = document.getElementById("sugarLevel").value;
+
+    var result;
+    var box = document.getElementById("resultBox");
+
+    if (sugar > 5) {
+        result = "Diabetic";
+        box.style.backgroundColor = "red";
+    } else {
+        result = "Non-Diabetic";
+        box.style.backgroundColor = "green";
+    }
+
+    document.getElementById("output").innerHTML =
+        "Patient Name: " + patient + "<br>" +
+        "Doctor Name: " + doctor + "<br>" +
+        "Status: " + result;
+
+    box.style.display = "block";
+}
+</script>
+
+<!-- ✅ SERVICE WORKER CONNECTION -->
+<script>
+if ('serviceWorker' in navigator) {
+
+    const swCode = `
+        self.addEventListener("install", event => {
+            console.log("SW Installed");
+        });
+
+        self.addEventListener("fetch", event => {
+            event.respondWith(fetch(event.request));
+        });
+    `;
+
+    const swBlob = new Blob([swCode], { type: "application/javascript" });
+    const swURL = URL.createObjectURL(swBlob);
+
+    // 👉 THIS IS THE CONNECTION
+    navigator.serviceWorker.register(swURL)
+    .then(() => console.log("Service Worker Registered"));
+}
+</script>
+
+</body>
+</html>
